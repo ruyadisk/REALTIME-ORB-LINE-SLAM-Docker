@@ -1,0 +1,32 @@
+version: "2.4"
+services:
+  ros-m:
+    build:
+      context: .
+      args:
+        UID: "1000"
+        GID: "1000"
+        USER: cjweibb
+    container_name: orb_line_slam
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - DISPLAY=${DISPLAY}
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - XAUTHORITY=/home/$USER/.Xauthority
+      - DOCKER_USER_NAME=$USER
+      - DOCKER_USER_ID=1000
+      - DOCKER_USER_GROUP_NAME=$USER
+      - DOCKER_USER_GROUP_ID=1000
+      - ROS_IP=127.0.0.1
+    tty: true
+    network_mode: "host"
+    volumes:
+      - /home/vip/ROS_BAG:/bags
+      # - /media/cjweibb/disk1:/disk
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $HOME/.Xauthority:/home/$USER/.Xauthority
+      - $HOME/.ssh:/home/$USER/.ssh
+      - /dev:/dev
+    privileged: true
+    ipc: host
